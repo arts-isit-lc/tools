@@ -128,8 +128,32 @@
         .hero-section .subtitle {
             font-size: 1.25rem;
             max-width: 700px;
-            margin: 0 auto;
+            margin: 0 auto 2.5rem;
             color: var(--dark-grey);
+        }
+
+        /* --- NEW: Search Bar --- */
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            border: 1px solid var(--medium-grey);
+            border-radius: 50px;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-family: var(--font-family);
+            box-shadow: var(--shadow);
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--ubc-blue-light);
         }
 
         /* --- Tool Gallery --- */
@@ -149,11 +173,6 @@
             gap: 2rem;
         }
 
-        /* Class to hide cards for filtering */
-        .tool-card.hidden {
-            display: none;
-        }
-
         /* --- Tool Card --- */
         .tool-card {
             background: #fff;
@@ -163,8 +182,12 @@
             display: flex;
             flex-direction: column;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
+        }
+
+        .tool-card.hidden {
+            display: none;
         }
 
         .tool-card:hover {
@@ -246,42 +269,7 @@
             font-weight: 700;
             font-size: 1.1rem;
         }
-
-        /* --- Categories Section --- */
-        .categories-section {
-            background-color: var(--light-grey);
-            padding: 5rem 0;
-        }
-
-        .categories-section h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .category-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .category-chip {
-            background-color: #fff;
-            border: 1px solid var(--medium-grey);
-            color: var(--ubc-blue);
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 700;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .category-chip:hover {
-            background-color: var(--ubc-blue);
-            color: #fff;
-            border-color: var(--ubc-blue);
-        }
-
+        
         /* --- Footer --- */
         .site-footer {
             background-color: var(--ubc-blue);
@@ -317,7 +305,7 @@
             .hero-section h1 { font-size: 2.5rem; }
             .hero-section .subtitle { font-size: 1.1rem; }
             
-            .tool-gallery, .categories-section { padding: 3rem 0; }
+            .tool-gallery { padding: 3rem 0; }
             
             h2 { font-size: 2rem; }
         }
@@ -349,12 +337,15 @@
             <div class="container">
                 <h1>Learning Technology Tool Hub</h1>
                 <p class="subtitle">A curated collection of educational technology to enhance teaching and learning in the UBC Faculty of Arts.</p>
+                <div class="search-bar">
+                    <input type="search" id="search-input" placeholder="Search by name or description...">
+                </div>
             </div>
         </section>
 
         <section class="tool-gallery">
             <div class="container">
-                <h2>Featured Tools</h2>
+                <h2>Available Tools</h2>
                 <div class="tool-grid">
                     <article class="tool-card" data-tags="lms assessment">
                         <div class="card-header">
@@ -418,19 +409,6 @@
             </div>
         </section>
 
-        <section class="categories-section">
-             <div class="container">
-                <h2>Browse by Category</h2>
-                <div class="category-grid">
-                    <a href="#" class="category-chip">Assessment & Grading</a>
-                    <a href="#" class="category-chip">Collaboration</a>
-                    <a href="#" class="category-chip">Video & Media</a>
-                    <a href="#" class="category-chip">Polling & Engagement</a>
-                    <a href="#" class="category-chip">Presentation</a>
-                    <a href="#" class="category-chip">Course Management</a>
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer class="site-footer">
@@ -443,21 +421,35 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const filterSelect = document.getElementById('tag-filter');
+            const searchInput = document.getElementById('search-input');
             const toolCards = document.querySelectorAll('.tool-card');
 
-            filterSelect.addEventListener('change', function() {
+            function filterTools() {
                 const selectedTag = filterSelect.value;
+                const searchQuery = searchInput.value.toLowerCase().trim();
 
                 toolCards.forEach(card => {
+                    // Get data from the card
                     const cardTags = card.getAttribute('data-tags');
-                    
-                    if (selectedTag === 'all' || cardTags.includes(selectedTag)) {
+                    const cardTitle = card.querySelector('h3').textContent.toLowerCase();
+                    const cardDescription = card.querySelector('.card-description').textContent.toLowerCase();
+
+                    // Check for matches
+                    const tagMatch = (selectedTag === 'all' || cardTags.includes(selectedTag));
+                    const searchMatch = (cardTitle.includes(searchQuery) || cardDescription.includes(searchQuery));
+
+                    // Show or hide the card
+                    if (tagMatch && searchMatch) {
                         card.classList.remove('hidden');
                     } else {
                         card.classList.add('hidden');
                     }
                 });
-            });
+            }
+
+            // Add event listeners to trigger the filter function
+            filterSelect.addEventListener('change', filterTools);
+            searchInput.addEventListener('input', filterTools);
         });
     </script>
 
