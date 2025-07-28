@@ -4,10 +4,324 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tool Repository | Arts ISIT Learning Centre</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- Global Styles & Variables --- */
+        :root {
+            --ubc-blue: #002145;
+            --ubc-blue-light: #0055B7;
+            --ubc-gold: #F2A900;
+            --light-grey: #f8f9fa;
+            --medium-grey: #e9ecef;
+            --dark-grey: #495057;
+            --text-color: #343a40;
+            --font-family: 'Nunito Sans', sans-serif;
+            --border-radius: 8px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            font-weight: 800;
+            color: var(--ubc-blue);
+            line-height: 1.2;
+        }
+
+        a {
+            color: var(--ubc-blue-light);
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: var(--ubc-gold);
+        }
+
+        /* --- Header --- */
+        .site-header {
+            background: #fff;
+            border-bottom: 1px solid var(--medium-grey);
+            padding: 1.5rem 0;
+        }
+
+        .site-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-header .logo a {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--ubc-blue);
+        }
+
+        .site-header .logo strong {
+            font-weight: 400;
+            opacity: 0.8;
+        }
+        
+        /* --- Filter Controls --- */
+        .filter-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .filter-controls label {
+            font-weight: 700;
+            color: var(--dark-grey);
+            font-size: 0.9rem;
+        }
+
+        .filter-controls select {
+            font-family: var(--font-family);
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 1px solid var(--medium-grey);
+            border-radius: var(--border-radius);
+            background-color: #fff;
+            color: var(--ubc-blue);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23002145' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1em;
+            transition: border-color 0.2s ease;
+        }
+
+        .filter-controls select:hover {
+            border-color: var(--ubc-blue-light);
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            background-color: var(--light-grey);
+            text-align: center;
+            padding: 5rem 0;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section .subtitle {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--dark-grey);
+        }
+
+        /* --- Tool Gallery --- */
+        .tool-gallery {
+            padding: 5rem 0;
+        }
+
+        .tool-gallery h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Class to hide cards for filtering */
+        .tool-card.hidden {
+            display: none;
+        }
+
+        /* --- Tool Card --- */
+        .tool-card {
+            background: #fff;
+            border: 1px solid var(--medium-grey);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+            position: relative;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--medium-grey);
+        }
+
+        .tool-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .card-description {
+            padding: 0 1.5rem;
+            flex-grow: 1;
+            color: var(--dark-grey);
+            font-size: 0.95rem;
+        }
+
+        .card-footer {
+            padding: 1.5rem;
+            padding-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .tag {
+            background-color: var(--medium-grey);
+            color: var(--dark-grey);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .support-level {
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            border: 1px solid;
+        }
+
+        .support-level.supported { background-color: #e6f4ea; color: #1e4620; border-color: #a3d6b8; }
+        .support-level.pilot { background-color: #fff4e5; color: #663c00; border-color: #ffd5a0; }
+        .support-level.self-serve { background-color: #f3f4f6; color: #374151; border-color: #d1d5db; }
+
+        .card-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .view-all-link {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .view-all-link a {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* --- Categories Section --- */
+        .categories-section {
+            background-color: var(--light-grey);
+            padding: 5rem 0;
+        }
+
+        .categories-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .category-chip {
+            background-color: #fff;
+            border: 1px solid var(--medium-grey);
+            color: var(--ubc-blue);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .category-chip:hover {
+            background-color: var(--ubc-blue);
+            color: #fff;
+            border-color: var(--ubc-blue);
+        }
+
+        /* --- Footer --- */
+        .site-footer {
+            background-color: var(--ubc-blue);
+            color: #fff;
+            text-align: center;
+            padding: 2.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .site-footer p {
+            margin: 0.5rem 0;
+            opacity: 0.8;
+        }
+
+        .site-footer a {
+            color: #fff;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+
+        .site-footer a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .site-header .container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .hero-section h1 { font-size: 2.5rem; }
+            .hero-section .subtitle { font-size: 1.1rem; }
+            
+            .tool-gallery, .categories-section { padding: 3rem 0; }
+            
+            h2 { font-size: 2rem; }
+        }
+    </style>
 </head>
 <body>
 
@@ -16,12 +330,17 @@
             <div class="logo">
                 <a href="#">Arts ISIT | <strong>Learning Centre</strong></a>
             </div>
-            <nav class="main-nav">
-                <a href="#">All Tools</a>
-                <a href="#">Categories</a>
-                <a href="#">Workshops</a>
-                <a href="#">Support</a>
-            </nav>
+            <div class="filter-controls">
+                <label for="tag-filter">Filter tools by category</label>
+                <select id="tag-filter" name="tag-filter">
+                    <option value="all">All Categories</option>
+                    <option value="lms">LMS</option>
+                    <option value="assessment">Assessment</option>
+                    <option value="video">Video & Media</option>
+                    <option value="collaboration">Collaboration</option>
+                    <option value="grading">Grading</option>
+                </select>
+            </div>
         </div>
     </header>
 
@@ -30,10 +349,6 @@
             <div class="container">
                 <h1>Learning Technology Tool Hub</h1>
                 <p class="subtitle">A curated collection of educational technology to enhance teaching and learning in the UBC Faculty of Arts.</p>
-                <div class="search-bar">
-                    <input type="search" placeholder="Search for a tool (e.g., Canvas, Zoom, Kaltura)...">
-                    <button type="submit">Search</button>
-                </div>
             </div>
         </section>
 
@@ -41,7 +356,7 @@
             <div class="container">
                 <h2>Featured Tools</h2>
                 <div class="tool-grid">
-                    <article class="tool-card">
+                    <article class="tool-card" data-tags="lms assessment">
                         <div class="card-header">
                             <img src="https://i.imgur.com/a5n1s4f.png" alt="Canvas Logo" class="tool-logo">
                             <h3>Canvas</h3>
@@ -55,7 +370,7 @@
                         <a href="#" class="card-link" aria-label="Learn more about Canvas"></a>
                     </article>
 
-                    <article class="tool-card">
+                    <article class="tool-card" data-tags="video media">
                         <div class="card-header">
                             <img src="https://i.imgur.com/8FkO6aT.png" alt="Kaltura Logo" class="tool-logo">
                             <h3>Kaltura</h3>
@@ -69,7 +384,7 @@
                         <a href="#" class="card-link" aria-label="Learn more about Kaltura"></a>
                     </article>
 
-                    <article class="tool-card">
+                    <article class="tool-card" data-tags="assessment grading">
                         <div class="card-header">
                             <img src="https://i.imgur.com/0F3kM8p.png" alt="Gradescope Logo" class="tool-logo">
                             <h3>Gradescope</h3>
@@ -83,7 +398,7 @@
                         <a href="#" class="card-link" aria-label="Learn more about Gradescope"></a>
                     </article>
                     
-                    <article class="tool-card">
+                    <article class="tool-card" data-tags="discussion collaboration">
                         <div class="card-header">
                             <img src="https://i.imgur.com/kL5jGz4.png" alt="Piazza Logo" class="tool-logo">
                             <h3>Piazza</h3>
@@ -96,7 +411,6 @@
                         </div>
                         <a href="#" class="card-link" aria-label="Learn more about Piazza"></a>
                     </article>
-
                 </div>
                  <div class="view-all-link">
                     <a href="#">View All Available Tools &rarr;</a>
@@ -125,6 +439,27 @@
             <p><a href="#">Contact Us</a> | <a href="#">UBC IT</a> | <a href="#">Faculty of Arts</a></p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterSelect = document.getElementById('tag-filter');
+            const toolCards = document.querySelectorAll('.tool-card');
+
+            filterSelect.addEventListener('change', function() {
+                const selectedTag = filterSelect.value;
+
+                toolCards.forEach(card => {
+                    const cardTags = card.getAttribute('data-tags');
+                    
+                    if (selectedTag === 'all' || cardTags.includes(selectedTag)) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
